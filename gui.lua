@@ -135,6 +135,35 @@ function UIModule.CreateWindow(titleText)
             update(input)
         end
     end)
+        -- Tab Sidebar Container (Left side)
+    local TabBar = Instance.new("Frame")
+    TabBar.Name = "TabBar"
+    TabBar.Position = UDim2.new(0, 10, 0, 45)
+    TabBar.Size = UDim2.new(0, 100, 1, -55)
+    TabBar.BackgroundTransparency = 1
+    TabBar.Parent = MainFrame
+
+    local TabBarLayout = Instance.new("UIListLayout")
+    TabBarLayout.Parent = TabBar
+    TabBarLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TabBarLayout.Padding = UDim.new(0, 5)
+
+    -- Container for all Tab Content Pages (Right side)
+    local PagesContainer = Instance.new("Frame")
+    PagesContainer.Name = "PagesContainer"
+    PagesContainer.Position = UDim2.new(0, 120, 0, 45)
+    PagesContainer.Size = UDim2.new(1, -130, 1, -55)
+    PagesContainer.BackgroundTransparency = 1
+    PagesContainer.Parent = MainFrame
+
+    -- Tracking system for your tabs
+    local WindowData = {
+        TabBar = TabBar,
+        PagesContainer = PagesContainer,
+        CurrentTab = nil
+    }
+
+    return WindowData -- Returns the data structure needed to add tabs instead of a raw frame
 
     return ContentFrame
 end
@@ -171,6 +200,60 @@ function UIModule.CreateButton(parent, text, callback)
     end)
 
     return Button
+end
+-- TAB CREATION FUNCTION
+function UIModule.CreateTab(windowData, tabName)
+    -- Create the navigation button on the left sidebar
+    local TabButton = Instance.new("TextButton")
+    TabButton.Name = tabName .. "Tab"
+    TabButton.Size = UDim2.new(1, 0, 0, 30)
+    TabButton.BackgroundColor3 = Color3.fromRGB(0, 87, 231) -- Blue
+    TabButton.Text = tabName
+    TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabButton.Font = Enum.Font.SourceSansBold
+    TabButton.TextSize = 14
+    TabButton.Parent = windowData.TabBar
+
+    local ButtonCorner = Instance.new("UICorner")
+    ButtonCorner.CornerRadius = UDim.new(0, 4)
+    ButtonCorner.Parent = TabButton
+
+    -- Create the page frame for this tab on the right side
+    local PageFrame = Instance.new("Frame")
+    PageFrame.Name = tabName .. "Page"
+    PageFrame.Size = UDim2.new(1, 0, 1, 0)
+    PageFrame.BackgroundTransparency = 1
+    PageFrame.Visible = false -- Hidden by default
+    PageFrame.Parent = windowData.PagesContainer
+
+    local PageLayout = Instance.new("UIListLayout")
+    PageLayout.Parent = PageFrame
+    PageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    PageLayout.Padding = UDim.new(0, 8)
+
+    -- Switch logic when clicked
+    TabButton.MouseButton1Click:Connect(function()
+        -- Hide all other pages
+        for _, page in ipairs(windowData.PagesContainer:GetChildren()) do
+            if page:IsA("Frame") then page.Visible = false end
+        end
+        -- Reset all tab button styles to normal
+        for _, btn in ipairs(windowData.TabBar:GetChildren()) do
+            if btn:IsA("TextButton") then btn.BackgroundColor3 = Color3.fromRGB(0, 87, 231) end
+        end
+        -- Show this page and highlight button
+        PageFrame.Visible = true
+        TabButton.BackgroundColor3 = Color3.fromRGB(0, 60, 180) -- Darker blue when active
+    end)
+
+    -- Auto-open the very first tab created
+    if not windowData.CurrentTab then
+        windowData.CurrentTab = PageFrame
+        PageFrame.Visible = true
+        TabButton.BackgroundColor3 = Color3.fromRGB(0, 60, 180)
+    end
+
+    return PageFrame -- Returns the page frame so you can pass it to UIModule.CreateButton()
 end
 
 return UIModule
