@@ -87,20 +87,6 @@ function UIModule.CreateWindow(titleText)
         ScreenGui:Destroy()
     end)
 
-    -- Content Frame
-    local ContentFrame = Instance.new("Frame")
-    ContentFrame.Name = "Content"
-    ContentFrame.Position = UDim2.new(0, 10, 0, 45)
-    ContentFrame.Size = UDim2.new(1, -20, 1, -55)
-    ContentFrame.BackgroundTransparency = 1
-    ContentFrame.Parent = MainFrame
-
-    -- Layout Manager (Automatically stacks buttons down cleanly)
-    local UIListLayout = Instance.new("UIListLayout")
-    UIListLayout.Parent = ContentFrame
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 8)
-
     -- Smooth Dragging Implementation
     local dragging, dragInput, dragStart, startPos
 
@@ -163,9 +149,7 @@ function UIModule.CreateWindow(titleText)
         CurrentTab = nil
     }
 
-    return WindowData -- Returns the data structure needed to add tabs instead of a raw frame
-
-    return ContentFrame
+    return WindowData
 end
 
 -- NEW BUTTON CREATION FUNCTION
