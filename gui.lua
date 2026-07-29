@@ -9,7 +9,6 @@ function UIModule.CreateWindow(titleText)
     -- Main ScreenGui Container
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "DeltaYellowBlueGUI"
-    -- Protect GUI from detection/deletion on modern executors
     if syn and syn.protect_gui then
         syn.protect_gui(ScreenGui)
     elseif gethui then
@@ -44,7 +43,7 @@ function UIModule.CreateWindow(titleText)
     local TopBar = Instance.new("Frame")
     TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 35)
-    TopBar.BackgroundColor3 = Color3.fromRGB(240, 210, 20) -- Slightly darker yellow
+    TopBar.BackgroundColor3 = Color3.fromRGB(240, 210, 20)
     TopBar.BorderSizePixel = 0
     TopBar.Parent = MainFrame
 
@@ -52,7 +51,6 @@ function UIModule.CreateWindow(titleText)
     TopBarCorner.CornerRadius = UDim.new(0, 8)
     TopBarCorner.Parent = TopBar
 
-    -- Cover bottom corners of top bar to blend with main frame
     local TopBarCover = Instance.new("Frame")
     TopBarCover.Size = UDim2.new(1, 0, 0, 10)
     TopBarCover.Position = UDim2.new(0, 0, 1, -10)
@@ -89,13 +87,19 @@ function UIModule.CreateWindow(titleText)
         ScreenGui:Destroy()
     end)
 
-    -- Content Frame (Where you will spawn your buttons/toggles)
+    -- Content Frame
     local ContentFrame = Instance.new("Frame")
     ContentFrame.Name = "Content"
     ContentFrame.Position = UDim2.new(0, 10, 0, 45)
     ContentFrame.Size = UDim2.new(1, -20, 1, -55)
     ContentFrame.BackgroundTransparency = 1
     ContentFrame.Parent = MainFrame
+
+    -- Layout Manager (Automatically stacks buttons down cleanly)
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.Parent = ContentFrame
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 8)
 
     -- Smooth Dragging Implementation
     local dragging, dragInput, dragStart, startPos
@@ -132,8 +136,41 @@ function UIModule.CreateWindow(titleText)
         end
     end)
 
-    -- Returns the Content element so you can easily append other elements to it
     return ContentFrame
+end
+
+-- NEW BUTTON CREATION FUNCTION
+function UIModule.CreateButton(parent, text, callback)
+    local Button = Instance.new("TextButton")
+    Button.Name = text .. "Button"
+    Button.Size = UDim2.new(1, 0, 0, 35) -- Fills frame width, 35px height
+    Button.BackgroundColor3 = Color3.fromRGB(0, 87, 231) -- Blue Button background
+    Button.Text = text
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+    Button.Font = Enum.Font.SourceSansBold
+    Button.TextSize = 16
+    Button.Parent = parent
+
+    -- Round button corners
+    local ButtonCorner = Instance.new("UICorner")
+    ButtonCorner.CornerRadius = UDim.new(0, 6)
+    ButtonCorner.Parent = Button
+
+    -- Yellow stroke border for the button
+    local ButtonStroke = Instance.new("UIStroke")
+    ButtonStroke.Color = Color3.fromRGB(240, 210, 20)
+    ButtonStroke.Thickness = 1.5
+    ButtonStroke.Parent = Button
+
+    -- Trigger code when clicked
+    Button.MouseButton1Click:Connect(function()
+        local success, err = pcall(callback)
+        if not success then
+            warn("Button error: " .. tostring(err))
+        end
+    end)
+
+    return Button
 end
 
 return UIModule
