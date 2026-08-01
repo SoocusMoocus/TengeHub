@@ -185,6 +185,99 @@ function UIModule.CreateButton(parent, text, callback)
 
     return Button
 end
+-- ФУНКЦИЯ СОЗДАНИЯ ПЕРЕКЛЮЧАТЕЛЯ (TOGGLE)
+function UIModule.CreateToggle(parent, text, defaultState, callback)
+    local TweenService = game:GetService("TweenService")
+    
+    -- Конфигурация по умолчанию
+    local ToggleState = (defaultState == nil) and false or defaultState
+    
+    -- Главный контейнер для тогла (строка)
+    local ToggleFrame = Instance.new("Frame")
+    ToggleFrame.Name = text .. "ToggleFrame"
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 35)
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(245, 220, 25) -- Чуть темнее основного фона
+    ToggleFrame.BackgroundTransparency = 0.2
+    ToggleFrame.Parent = parent
+
+    local FrameCorner = Instance.new("UICorner")
+    FrameCorner.CornerRadius = UDim.new(0, 6)
+    FrameCorner.Parent = ToggleFrame
+
+    -- Текст тогла
+    local ToggleLabel = Instance.new("TextLabel")
+    ToggleLabel.Name = "Label"
+    ToggleLabel.Size = UDim2.new(1, -45, 1, 0)
+    ToggleLabel.Position = UDim2.new(0, 10, 0, 0)
+    ToggleLabel.BackgroundTransparency = 1
+    ToggleLabel.Text = text
+    ToggleLabel.TextColor3 = Color3.fromRGB(0, 87, 231) -- Синий текст
+    ToggleLabel.Font = Enum.Font.SourceSansBold
+    ToggleLabel.TextSize = 16
+    ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ToggleLabel.Parent = ToggleFrame
+
+    -- Квадратный бокс-индикатор
+    local ToggleBox = Instance.new("Frame")
+    ToggleBox.Name = "ToggleBox"
+    ToggleBox.Size = UDim2.new(0, 22, 0, 22)
+    ToggleBox.Position = UDim2.new(1, -32, 0.5, 0)
+    ToggleBox.AnchorPoint = Vector2.new(0, 0.5)
+    ToggleBox.BackgroundColor3 = Color3.fromRGB(180, 180, 180) -- Серый по умолчанию (выключен)
+    ToggleBox.Parent = ToggleFrame
+
+    local BoxCorner = Instance.new("UICorner")
+    BoxCorner.CornerRadius = UDim.new(0, 5)
+    BoxCorner.Parent = ToggleBox
+
+    local BoxStroke = Instance.new("UIStroke")
+    BoxStroke.Color = Color3.fromRGB(0, 87, 231)
+    BoxStroke.Thickness = 1.5
+    BoxStroke.Parent = ToggleBox
+
+    -- Невидимая кнопка для клика по всей площади тогла
+    local ClickButton = Instance.new("TextButton")
+    ClickButton.Name = "ClickButton"
+    ClickButton.Size = UDim2.new(1, 0, 1, 0)
+    ClickButton.BackgroundTransparency = 1
+    ClickButton.Text = ""
+    ClickButton.Parent = ToggleFrame
+
+    -- Объект управления тогла (интерфейс)
+    local ToggleObject = {
+        Value = ToggleState
+    }
+
+    -- Функция обновления визуального состояния и вызова callback
+    function ToggleObject:Set(value)
+        ToggleObject.Value = value
+        
+        -- Цвета для анимации: Синий если включен, Серый если выключен
+        local targetColor = ToggleObject.Value and Color3.fromRGB(0, 87, 231) or Color3.fromRGB(180, 180, 180)
+        
+        -- Плавная анимация цвета бокса
+        TweenService:Create(ToggleBox, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            BackgroundColor3 = targetColor
+        }):Play()
+
+        -- Безопасный вызов вашей функции
+        local success, err = pcall(callback, ToggleObject.Value)
+        if not success then
+            warn("Toggle error: " .. tostring(err))
+        end
+    end
+
+    -- Обработка клика
+    ClickButton.MouseButton1Click:Connect(function()
+        ToggleObject:Set(not ToggleObject.Value)
+    end)
+
+    -- Установка начального состояния без задержек
+    ToggleObject:Set(ToggleObject.Value)
+
+    return ToggleObject
+end
+
 -- TAB CREATION FUNCTION
 function UIModule.CreateTab(windowData, tabName)
     -- Create the navigation button on the left sidebar
