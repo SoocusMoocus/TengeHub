@@ -1,5 +1,4 @@
 local UIModule = {}
-
 function UIModule.CreateWindow(titleText)
     -- Core Services
     local UserInputService = game:GetService("UserInputService")
@@ -61,7 +60,7 @@ function UIModule.CreateWindow(titleText)
     -- Window Title
     local Title = Instance.new("TextLabel")
     Title.Name = "Title"
-    Title.Size = UDim2.new(1, -50, 1, 0)
+    Title.Size = UDim2.new(1, -85, 1, 0)
     Title.Position = UDim2.new(0, 15, 0, 0)
     Title.BackgroundTransparency = 1
     Title.Text = titleText or "Delta Script"
@@ -87,7 +86,102 @@ function UIModule.CreateWindow(titleText)
         ScreenGui:Destroy()
     end)
 
-    -- Smooth Dragging Implementation
+    -- ==========================================
+    -- HIDE / UNHIDE & DRAGGABLE OPEN BUTTON
+    -- ==========================================
+    
+    local OpenButton = Instance.new("TextButton")
+    OpenButton.Name = "OpenButton"
+    OpenButton.Size = UDim2.new(0, 50, 0, 50)
+    OpenButton.Position = UDim2.new(0, 20, 0.5, -25)
+    OpenButton.BackgroundColor3 = Color3.fromRGB(255, 235, 59)
+    OpenButton.Text = "Open"
+    OpenButton.TextColor3 = Color3.fromRGB(0, 87, 231)
+    OpenButton.Font = Enum.Font.SourceSansBold
+    OpenButton.TextSize = 14
+    OpenButton.Active = true
+    OpenButton.Visible = false
+    OpenButton.Parent = ScreenGui
+
+    local OpenCorner = Instance.new("UICorner")
+    OpenCorner.CornerRadius = UDim.new(0, 8)
+    OpenCorner.Parent = OpenButton
+
+    local OpenStroke = Instance.new("UIStroke")
+    OpenStroke.Color = Color3.fromRGB(0, 87, 231)
+    OpenStroke.Thickness = 2
+    OpenStroke.Parent = OpenButton
+
+    local HideButton = Instance.new("TextButton")
+    HideButton.Name = "HideButton"
+    HideButton.Size = UDim2.new(0, 35, 0, 35)
+    HideButton.Position = UDim2.new(1, -70, 0, 0)
+    HideButton.BackgroundTransparency = 1
+    HideButton.Text = "-"
+    HideButton.TextColor3 = Color3.fromRGB(0, 87, 231)
+    HideButton.TextSize = 24
+    HideButton.Font = Enum.Font.SourceSansBold
+    HideButton.Parent = TopBar
+
+    -- Toggle Actions (With simple click verification to block trigger during drag)
+    local isDraggingOpenBtn = false
+
+    HideButton.MouseButton1Click:Connect(function()
+        MainFrame.Visible = false
+        OpenButton.Visible = true
+    end)
+
+    OpenButton.MouseButton1Click:Connect(function()
+        if not isDraggingOpenBtn then
+            MainFrame.Visible = true
+            OpenButton.Visible = false
+        end
+    end)
+
+    -- OpenButton Dragging Implementation
+    local btnDragging, btnDragInput, btnDragStart, btnStartPos
+
+    local function updateOpenBtn(input)
+        local delta = input.Position - btnDragStart
+        local targetPos = UDim2.new(btnStartPos.X.Scale, btnStartPos.X.Offset + delta.X, btnStartPos.Y.Scale, btnStartPos.Y.Offset + delta.Y)
+        TweenService:Create(OpenButton, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = targetPos}):Play()
+    end
+
+    OpenButton.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            btnDragging = true
+            isDraggingOpenBtn = false
+            btnDragStart = input.Position
+            btnStartPos = OpenButton.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    btnDragging = false
+                    task.wait()
+                    isDraggingOpenBtn = false
+                end
+            end)
+        end
+    end)
+
+    OpenButton.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            btnDragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == btnDragInput and btnDragging then
+            if (input.Position - btnDragStart).Magnitude > 5 then
+                isDraggingOpenBtn = true
+            end
+            updateOpenBtn(input)
+        end
+    end)
+
+    -- ==========================================
+
+    -- Smooth Dragging Implementation (MainFrame)
     local dragging, dragInput, dragStart, startPos
 
     local function update(input)
@@ -151,6 +245,7 @@ function UIModule.CreateWindow(titleText)
 
     return WindowData
 end
+
 
 -- NEW BUTTON CREATION FUNCTION
 function UIModule.CreateButton(parent, text, callback)
