@@ -28,8 +28,8 @@ function UIModule.CreateWindow(titleText)
 
     -- Main Outline
     local MainStroke = Instance.new("UIStroke")
-    MainStroke.Color = Color3.fromRGB(0, 87, 231) -- Blue
-    MainStroke.Thickness = 3
+    MainStroke.Color = Color3.fromRGB(20, 20, 20) -- Blue
+    MainStroke.Thickness = 2
     MainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     MainStroke.Parent = MainFrame
 
