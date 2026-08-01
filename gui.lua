@@ -332,5 +332,134 @@ function UIModule.CreateTab(windowData, tabName)
 
     return PageFrame -- Returns the page frame so you can pass it to UIModule.CreateButton()
 end
+-- DROPDOWN CREATION FUNCTION
+function UIModule.CreateDropdown(parent, text, options, callback)
+    local DropdownData = {
+        Open = false,
+        Selected = nil,
+        Options = options or {}
+    }
+
+    -- Main Dropdown Button Container
+    local DropdownMain = Instance.new("TextButton")
+    DropdownMain.Name = text .. "Dropdown"
+    DropdownMain.Size = UDim2.new(1, 0, 0, 35)
+    DropdownMain.BackgroundColor3 = Color3.fromRGB(0, 87, 231) -- Blue
+    DropdownMain.Text = "  " .. text .. ": None"
+    DropdownMain.TextColor3 = Color3.fromRGB(255, 255, 255)
+    DropdownMain.Font = Enum.Font.SourceSansBold
+    DropdownMain.TextSize = 14
+    DropdownMain.TextXAlignment = Enum.TextXAlignment.Left
+    DropdownMain.ClipsDescendants = false
+    DropdownMain.Parent = parent
+
+    local MainCorner = Instance.new("UICorner")
+    MainCorner.CornerRadius = UDim.new(0, 6)
+    MainCorner.Parent = DropdownMain
+
+    local MainStroke = Instance.new("UIStroke")
+    MainStroke.Color = Color3.fromRGB(240, 210, 20) -- Yellow
+    MainStroke.Thickness = 1.5
+    MainStroke.Parent = DropdownMain
+
+    -- Arrow Visual Indicator
+    local Arrow = Instance.new("TextLabel")
+    Arrow.Name = "Arrow"
+    Arrow.Size = UDim2.new(0, 35, 1, 0)
+    Arrow.Position = UDim2.new(1, -35, 0, 0)
+    Arrow.BackgroundTransparency = 1
+    Arrow.Text = "▼"
+    Arrow.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Arrow.TextSize = 12
+    Arrow.Font = Enum.Font.SourceSansBold
+    Arrow.Parent = DropdownMain
+
+    -- Scrolling Container for Dropdown Options
+    local ItemsContainer = Instance.new("ScrollingFrame")
+    ItemsContainer.Name = "ItemsContainer"
+    ItemsContainer.Size = UDim2.new(1, 0, 0, 0) -- Starts at 0 height
+    ItemsContainer.Position = UDim2.new(0, 0, 1, 5)
+    ItemsContainer.BackgroundColor3 = Color3.fromRGB(0, 60, 180) -- Darker Blue
+    ItemsContainer.BorderSizePixel = 0
+    ItemsContainer.Visible = false
+    ItemsContainer.ZIndex = 5 -- Ensures it renders above elements below it
+    ItemsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
+    ItemsContainer.ScrollBarThickness = 4
+    ItemsContainer.ScrollBarImageColor3 = Color3.fromRGB(255, 235, 59)
+    ItemsContainer.Parent = DropdownMain
+
+    local ItemsLayout = Instance.new("UIListLayout")
+    ItemsLayout.Parent = ItemsContainer
+    ItemsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    local ItemsCorner = Instance.new("UICorner")
+    ItemsCorner.CornerRadius = UDim.new(0, 6)
+    ItemsCorner.Parent = ItemsContainer
+
+    -- Auto-adjust CanvasSize based on elements added
+    ItemsLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        ItemsContainer.CanvasSize = UDim2.new(0, 0, 0, ItemsLayout.AbsoluteContentSize.Y)
+    end)
+
+    -- Toggle Dropdown Open/Closed State
+    local function ToggleDropdown()
+        DropdownData.Open = not DropdownData.Open
+        if DropdownData.Open then
+            Arrow.Text = "▲"
+            ItemsContainer.Visible = true
+            -- Dynamically size height based on choices (cap at 105px max height)
+            local targetHeight = math.min(ItemsLayout.AbsoluteContentSize.Y, 105)
+            game:GetService("TweenService"):Create(ItemsContainer, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = UDim2.new(1, 0, 0, targetHeight)}):Play()
+        else
+            Arrow.Text = "▼"
+            local closeTween = game:GetService("TweenService"):Create(ItemsContainer, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = UDim2.new(1, 0, 0, 0)})
+            closeTween:Play()
+            closeTween.Completed:Connect(function()
+                if not DropdownData.Open then ItemsContainer.Visible = false end
+            end)
+        end
+    end
+
+    DropdownMain.MouseButton1Click:Connect(ToggleDropdown)
+
+    -- Function to populate elements into the list
+    local function RefreshOptions()
+        for _, child in ipairs(ItemsContainer:GetChildren()) do
+            if child:IsA("TextButton") then child:Destroy() end
+        end
+
+        for _, optionName in ipairs(DropdownData.Options) do
+            local OptionBtn = Instance.new("TextButton")
+            OptionBtn.Name = optionName .. "Option"
+            OptionBtn.Size = UDim2.new(1, 0, 0, 30)
+            OptionBtn.BackgroundColor3 = Color3.fromRGB(0, 60, 180)
+            OptionBtn.BackgroundTransparency = 1
+            OptionBtn.Text = "  " .. optionName
+            OptionBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            OptionBtn.TextSize = 14
+            OptionBtn.Font = Enum.Font.SourceSans
+            OptionBtn.TextXAlignment = Enum.TextXAlignment.Left
+            OptionBtn.ZIndex = 6
+            OptionBtn.Parent = ItemsContainer
+
+            OptionBtn.MouseButton1Click:Connect(function()
+                DropdownData.Selected = optionName
+                DropdownMain.Text = "  " .. text .. ": " .. optionName
+                ToggleDropdown()
+                task.spawn(callback, optionName)
+            end)
+        end
+    end
+
+    RefreshOptions()
+
+    -- Expose helper methods to modify dropdown choices on the fly
+    function DropdownData:UpdateOptions(newOptions)
+        DropdownData.Options = newOptions or {}
+        RefreshOptions()
+    end
+
+    return DropdownData
+end
 
 return UIModule
