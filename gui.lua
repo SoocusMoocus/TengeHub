@@ -280,7 +280,7 @@ function UIModule.CreateToggle(parent, text, defaultState, callback)
     local ToggleFrame = Instance.new("Frame")
     ToggleFrame.Name = text .. "ToggleFrame"
     ToggleFrame.Size = UDim2.new(1, 0, 0, 35)
-    ToggleFrame.BackgroundColor3 = Color3.fromRGB(245, 220, 25) -- Чуть темнее основного фона
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Чуть темнее основного фона
     ToggleFrame.BackgroundTransparency = 0.2
     ToggleFrame.Parent = parent
 
@@ -295,7 +295,7 @@ function UIModule.CreateToggle(parent, text, defaultState, callback)
     ToggleLabel.Position = UDim2.new(0, 10, 0, 0)
     ToggleLabel.BackgroundTransparency = 1
     ToggleLabel.Text = text
-    ToggleLabel.TextColor3 = Color3.fromRGB(0, 87, 231) -- Синий текст
+    ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Синий текст
     ToggleLabel.Font = Enum.Font.SourceSansBold
     ToggleLabel.TextSize = 16
     ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -315,7 +315,7 @@ function UIModule.CreateToggle(parent, text, defaultState, callback)
     BoxCorner.Parent = ToggleBox
 
     local BoxStroke = Instance.new("UIStroke")
-    BoxStroke.Color = Color3.fromRGB(0, 87, 231)
+    BoxStroke.Color = Color3.fromRGB(50, 50, 50)
     BoxStroke.Thickness = 1.5
     BoxStroke.Parent = ToggleBox
 
