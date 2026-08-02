@@ -42,7 +42,7 @@ function UIModule.CreateWindow(titleText)
     local TopBar = Instance.new("Frame")
     TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 35)
-    TopBar.BackgroundColor3 = Color3.fromRGB(240, 210, 20)
+    TopBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     TopBar.BorderSizePixel = 0
     TopBar.Parent = MainFrame
 
@@ -64,7 +64,7 @@ function UIModule.CreateWindow(titleText)
     Title.Position = UDim2.new(0, 15, 0, 0)
     Title.BackgroundTransparency = 1
     Title.Text = titleText or "Delta Script"
-    Title.TextColor3 = Color3.fromRGB(0, 87, 231) -- Blue text
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255) -- Blue text
     Title.TextSize = 18
     Title.Font = Enum.Font.SourceSansBold
     Title.TextXAlignment = Enum.TextXAlignment.Left
