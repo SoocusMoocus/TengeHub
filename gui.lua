@@ -368,7 +368,7 @@ function UIModule.CreateTab(windowData, tabName)
     local TabButton = Instance.new("TextButton")
     TabButton.Name = tabName .. "Tab"
     TabButton.Size = UDim2.new(1, 0, 0, 30)
-    TabButton.BackgroundColor3 = Color3.fromRGB(0, 87, 231) -- Blue
+    TabButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Blue
     TabButton.Text = tabName
     TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     TabButton.Font = Enum.Font.SourceSansBold
@@ -428,7 +428,7 @@ function UIModule.CreateDropdown(parent, text, options, callback)
     local DropdownMain = Instance.new("TextButton")
     DropdownMain.Name = text .. "Dropdown"
     DropdownMain.Size = UDim2.new(1, 0, 0, 35)
-    DropdownMain.BackgroundColor3 = Color3.fromRGB(0, 87, 231) -- Blue
+    DropdownMain.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Blue
     DropdownMain.Text = "  " .. text .. ": None"
     DropdownMain.TextColor3 = Color3.fromRGB(255, 255, 255)
     DropdownMain.Font = Enum.Font.SourceSansBold
@@ -463,7 +463,7 @@ function UIModule.CreateDropdown(parent, text, options, callback)
     ItemsContainer.Name = "ItemsContainer"
     ItemsContainer.Size = UDim2.new(1, 0, 0, 0) -- Starts at 0 height
     ItemsContainer.Position = UDim2.new(0, 0, 1, 5)
-    ItemsContainer.BackgroundColor3 = Color3.fromRGB(0, 60, 180) -- Darker Blue
+    ItemsContainer.BackgroundColor3 = Color3.fromRGB(80, 80, 80) -- Darker Blue
     ItemsContainer.BorderSizePixel = 0
     ItemsContainer.Visible = false
     ItemsContainer.ZIndex = 5 -- Ensures it renders above elements below it
