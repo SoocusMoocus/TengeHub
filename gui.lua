@@ -400,7 +400,7 @@ function UIModule.CreateTab(windowData, tabName)
         end
         -- Reset all tab button styles to normal
         for _, btn in ipairs(windowData.TabBar:GetChildren()) do
-            if btn:IsA("TextButton") then btn.BackgroundColor3 = Color3.fromRGB(0, 87, 231) end
+            if btn:IsA("TextButton") then btn.BackgroundColor3 = Color3.fromRGB(100, 100, 100) end
         end
         -- Show this page and highlight button
         PageFrame.Visible = true
@@ -464,7 +464,7 @@ function UIModule.CreateDropdown(parent, text, options, callback)
     ItemsContainer.ZIndex = 5 -- Ensures it renders above elements below it
     ItemsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
     ItemsContainer.ScrollBarThickness = 4
-    ItemsContainer.ScrollBarImageColor3 = Color3.fromRGB(255, 235, 59)
+    ItemsContainer.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 150)
     ItemsContainer.Parent = DropdownMain
 
     local ItemsLayout = Instance.new("UIListLayout")
