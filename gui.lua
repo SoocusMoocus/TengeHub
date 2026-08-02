@@ -94,7 +94,7 @@ function UIModule.CreateWindow(titleText)
     OpenButton.Name = "OpenButton"
     OpenButton.Size = UDim2.new(0, 50, 0, 50)
     OpenButton.Position = UDim2.new(0, 20, 0.5, -25)
-    OpenButton.BackgroundColor3 = Color3.fromRGB(255, 235, 59)
+    OpenButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
     OpenButton.Text = "T"
     OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     OpenButton.Font = Enum.Font.SourceSansBold
@@ -440,11 +440,6 @@ function UIModule.CreateDropdown(parent, text, options, callback)
     local MainCorner = Instance.new("UICorner")
     MainCorner.CornerRadius = UDim.new(0, 6)
     MainCorner.Parent = DropdownMain
-
-    local MainStroke = Instance.new("UIStroke")
-    MainStroke.Color = Color3.fromRGB(240, 210, 20) -- Yellow
-    MainStroke.Thickness = 1.5
-    MainStroke.Parent = DropdownMain
 
     -- Arrow Visual Indicator
     local Arrow = Instance.new("TextLabel")
