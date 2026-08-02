@@ -247,9 +247,9 @@ function UIModule.CreateButton(parent, text, callback)
     local Button = Instance.new("TextButton")
     Button.Name = text .. "Button"
     Button.Size = UDim2.new(1, 0, 0, 35) -- Fills frame width, 35px height
-    Button.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Blue Button background
+    Button.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     Button.Text = text
-    Button.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button.Font = Enum.Font.SourceSansBold
     Button.TextSize = 16
     Button.Parent = parent
