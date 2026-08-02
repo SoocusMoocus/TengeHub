@@ -95,8 +95,8 @@ function UIModule.CreateWindow(titleText)
     OpenButton.Size = UDim2.new(0, 50, 0, 50)
     OpenButton.Position = UDim2.new(0, 20, 0.5, -25)
     OpenButton.BackgroundColor3 = Color3.fromRGB(255, 235, 59)
-    OpenButton.Text = "Open"
-    OpenButton.TextColor3 = Color3.fromRGB(0, 87, 231)
+    OpenButton.Text = "T"
+    OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     OpenButton.Font = Enum.Font.SourceSansBold
     OpenButton.TextSize = 14
     OpenButton.Active = true
@@ -106,11 +106,6 @@ function UIModule.CreateWindow(titleText)
     local OpenCorner = Instance.new("UICorner")
     OpenCorner.CornerRadius = UDim.new(0, 8)
     OpenCorner.Parent = OpenButton
-
-    local OpenStroke = Instance.new("UIStroke")
-    OpenStroke.Color = Color3.fromRGB(0, 87, 231)
-    OpenStroke.Thickness = 2
-    OpenStroke.Parent = OpenButton
 
     local HideButton = Instance.new("TextButton")
     HideButton.Name = "HideButton"
