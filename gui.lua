@@ -98,7 +98,7 @@ function UIModule.CreateWindow(titleText)
     OpenButton.Text = "T"
     OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     OpenButton.Font = Enum.Font.SourceSansBold
-    OpenButton.TextSize = 14
+    OpenButton.TextScaled = true
     OpenButton.Active = true
     OpenButton.Visible = false
     OpenButton.Parent = ScreenGui
