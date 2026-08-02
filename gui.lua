@@ -404,14 +404,14 @@ function UIModule.CreateTab(windowData, tabName)
         end
         -- Show this page and highlight button
         PageFrame.Visible = true
-        TabButton.BackgroundColor3 = Color3.fromRGB(0, 60, 180) -- Darker blue when active
+        TabButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
     end)
 
     -- Auto-open the very first tab created
     if not windowData.CurrentTab then
         windowData.CurrentTab = PageFrame
         PageFrame.Visible = true
-        TabButton.BackgroundColor3 = Color3.fromRGB(0, 60, 180)
+        TabButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     end
 
     return PageFrame -- Returns the page frame so you can pass it to UIModule.CreateButton()
