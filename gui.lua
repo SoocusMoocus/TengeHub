@@ -21,7 +21,7 @@ function UIModule.CreateWindow(titleText)
     MainFrame.Name = "MainFrame"
     MainFrame.Position = UDim2.new(0.5, -225, 0.5, -150)
     MainFrame.Size = UDim2.new(0, 450, 0, 300)
-    MainFrame.BackgroundColor3 = Color3.fromRGB(255, 235, 59) -- Yellow
+    MainFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- Yellow
     MainFrame.BorderSizePixel = 0
     MainFrame.Active = true
     MainFrame.Parent = ScreenGui
@@ -113,7 +113,7 @@ function UIModule.CreateWindow(titleText)
     HideButton.Position = UDim2.new(1, -70, 0, 0)
     HideButton.BackgroundTransparency = 1
     HideButton.Text = "-"
-    HideButton.TextColor3 = Color3.fromRGB(0, 87, 231)
+    HideButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     HideButton.TextSize = 24
     HideButton.Font = Enum.Font.SourceSansBold
     HideButton.Parent = TopBar
@@ -247,7 +247,7 @@ function UIModule.CreateButton(parent, text, callback)
     local Button = Instance.new("TextButton")
     Button.Name = text .. "Button"
     Button.Size = UDim2.new(1, 0, 0, 35) -- Fills frame width, 35px height
-    Button.BackgroundColor3 = Color3.fromRGB(0, 87, 231) -- Blue Button background
+    Button.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Blue Button background
     Button.Text = text
     Button.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
     Button.Font = Enum.Font.SourceSansBold
@@ -258,12 +258,6 @@ function UIModule.CreateButton(parent, text, callback)
     local ButtonCorner = Instance.new("UICorner")
     ButtonCorner.CornerRadius = UDim.new(0, 6)
     ButtonCorner.Parent = Button
-
-    -- Yellow stroke border for the button
-    local ButtonStroke = Instance.new("UIStroke")
-    ButtonStroke.Color = Color3.fromRGB(240, 210, 20)
-    ButtonStroke.Thickness = 1.5
-    ButtonStroke.Parent = Button
 
     -- Trigger code when clicked
     Button.MouseButton1Click:Connect(function()
