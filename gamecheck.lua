@@ -1,6 +1,6 @@
 local PlaceId = game.PlaceId
 local Games = {
-    [2210085102] = "https://githubusercontent.com",
+    [2210085102] = "https://raw.githubusercontent.com/SoocusMoocus/TengeHub/refs/heads/main/naval.lua",
 }
 
 local UniversalScript = "https://githubusercontent.com"
