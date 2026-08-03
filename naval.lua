@@ -29,10 +29,9 @@ end
 if checkSavedKey() then
 local player = game:GetService("Players").LocalPlayer
 local UIModule = loadstring(game:HttpGet("https://raw.githubusercontent.com/SoocusMoocus/TengeHub/refs/heads/main/gui.lua"))()
-local Window = UIModule.CreateWindow("Tenge Hub - Naval Warfare")
+local Window = UIModule.CreateWindow("Tenge Hub - Naval Warfare V1")
 local CombatTab = UIModule.CreateTab(Window, "Combat")
 local IslandsTab = UIModule.CreateTab(Window, "Islands")
-local TrollTab = UIModule.CreateTab(Window, "Troll")
 UIModule.CreateButton(CombatTab, "Inf Ammo", function()
 local character = player.Character or player.CharacterAdded:Wait()
 local gun = player.Backpack:FindFirstChild("M1 Garand") or character:FindFirstChild("M1 Garand")
