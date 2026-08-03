@@ -1,5 +1,6 @@
 local UIModule = {}
 function UIModule.CreateWindow(titleText)
+    local discordLink = "https://discord.gg/NpP2kJDm4X"
     -- Core Services
     local UserInputService = game:GetService("UserInputService")
     local TweenService = game:GetService("TweenService")
@@ -77,7 +78,7 @@ function UIModule.CreateWindow(titleText)
     CloseButton.Position = UDim2.new(1, -35, 0, 0)
     CloseButton.BackgroundTransparency = 1
     CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(200, 0, 0)
+    CloseButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
     CloseButton.TextSize = 20
     CloseButton.Font = Enum.Font.SourceSansBold
     CloseButton.Parent = TopBar
@@ -85,7 +86,25 @@ function UIModule.CreateWindow(titleText)
     CloseButton.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
     end)
+    
+    local DiscordButton = Instance.new("TextButton")
+    DiscordButton.Name = "DiscordButton"
+    DiscordButton.Size = UDim2.new(0, 35, 0, 35)
+    DiscordButton.Position = UDim2.new(1, -105, 0, 0)
+    DiscordButton.BackgroundTransparency = 1
+    DiscordButton.Text = "DS"
+    DiscordButton.TextColor3 = Color3.fromRGB(114, 137, 218)
+    DiscordButton.TextSize = 20
+    DiscordButton.Font = Enum.Font.SourceSansBold
+    DiscordButton.Parent = TopBar
 
+    DiscordButton.MouseButton1Click:Connect(function()
+        if setclipboard then
+            setclipboard(discordLink)
+        elseif toclipboard then
+            toclipboard(discordLink)
+        end
+    end)
     -- ==========================================
     -- HIDE / UNHIDE & DRAGGABLE OPEN BUTTON
     -- ==========================================
